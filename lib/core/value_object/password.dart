@@ -23,8 +23,8 @@ class Password extends ValueObject<String> {
 }
 
 Either<Failure, String> validatepassword(String password) {
-  // if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(password)) {
-  //   return left(TooShortPassWord());
-  // }
+  if (password.length<4) {
+    return left(TooShortPassWord());
+  }
   return Right(password);
 }
