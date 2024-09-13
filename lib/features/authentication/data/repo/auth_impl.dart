@@ -42,10 +42,10 @@ class AuthImpl extends Auth {
   }
 
   @override
-  Future<Option<domain.User>> getAuthUser() async {
-    var authInj = getIt.get<FirebaseAuth>();
+  Future<Option<domain.User>> getCurrentUser() async {
+    var firebaseAuth = getIt.get<FirebaseAuth>();
 
-    User? user = authInj.currentUser;
-    return optionOf(await authInj.toDomain(user));
+    User? user = firebaseAuth.currentUser;
+    return optionOf(await firebaseAuth.toDomain(user));
   }
 }

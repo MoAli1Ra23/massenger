@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
+  //TODO: Implement UUid;
   final String? name;
   final String? imageURl;  
   final String? phone;  
