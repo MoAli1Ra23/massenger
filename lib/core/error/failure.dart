@@ -7,5 +7,6 @@
    class TooShortPassWord extends Failure{
 
    }
+   class AuthFailure extends Failure{}
     
 
