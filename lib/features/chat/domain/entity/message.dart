@@ -3,25 +3,39 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 
+import 'package:massenger/features/authentication/domain/entity/user.dart';
+
 class Message extends Equatable {
   final String text;
   final DateTime dateTime;
-  final int? watchStatr;
+  final int watchStatr;
+  final String? imgeUrl;
+  final User? user;
+  final String? id;
   const Message({
     required this.text,
     required this.dateTime,
-    this.watchStatr,
+    this.watchStatr=0,
+    this.imgeUrl,
+    this.user,
+    this.id,
   });
 
   Message copyWith({
     String? text,
     DateTime? dateTime,
     int? watchStatr,
+    String? imgeUrl,
+    User? user,
+    String? id,
   }) {
     return Message(
       text: text ?? this.text,
       dateTime: dateTime ?? this.dateTime,
       watchStatr: watchStatr ?? this.watchStatr,
+      imgeUrl: imgeUrl ?? this.imgeUrl,
+      user: user ?? this.user,
+      id: id ?? this.id,
     );
   }
 
@@ -30,6 +44,9 @@ class Message extends Equatable {
       'text': text,
       'dateTime': dateTime.millisecondsSinceEpoch,
       'watchStatr': watchStatr,
+      'imgeUrl': imgeUrl,
+      'user': user?.toMap(),
+      'id': id,
     };
   }
 
@@ -37,7 +54,10 @@ class Message extends Equatable {
     return Message(
       text: map['text'] as String,
       dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int),
-      watchStatr: map['watchStatr'] != null ? map['watchStatr'] as int : null,
+      watchStatr: map['watchStatr'] as int,
+      imgeUrl: map['imgeUrl'] != null ? map['imgeUrl'] as String : null,
+      user: map['user'] != null ? User.fromMap(map['user'] as Map<String,dynamic>) : null,
+      id: map['id'] != null ? map['id'] as  String  : null,
     );
   }
 
@@ -49,5 +69,14 @@ class Message extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [text, dateTime, watchStatr];
+  List<Object?> get props {
+    return [
+      text,
+      dateTime,
+      watchStatr,
+      imgeUrl,
+      user,
+      id,
+    ];
+  }
 }

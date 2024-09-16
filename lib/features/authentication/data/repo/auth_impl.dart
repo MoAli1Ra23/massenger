@@ -1,10 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' ;
 import 'package:massenger/core/error/failure.dart';
 import 'package:massenger/core/func/user_converter.dart';
 import 'package:massenger/core/value_object/email.dart';
 import 'package:massenger/core/value_object/password.dart';
-import 'package:massenger/features/authentication/domain/repo/auth.dart';
+ import 'package:massenger/features/authentication/domain/repo/auth.dart';
 import 'package:injectable/injectable.dart';
 import 'package:massenger/injection.dart';
 import 'package:massenger/features/authentication/domain/entity/user.dart'
@@ -13,17 +13,18 @@ import 'package:massenger/features/authentication/domain/entity/user.dart'
 @LazySingleton(as: Auth, env: [Environment.dev, Environment.prod])
 class AuthImpl extends Auth {
   @override
-  Future<Option<Failure>> createAcccontWithEmail(
+  Future<Either<Failure ,domain. User>> createAcccontWithEmail(
       Email email, Password pass) async {
+   var firebaseAuth=    getIt.get<FirebaseAuth>();
     try {
       final es = email.getOrCrash();
       final ps = pass.getOrCrash();
-      await getIt
+     var  u= await getIt
           .get<FirebaseAuth>()
           .createUserWithEmailAndPassword(email: es, password: ps);
-      return none();
+      return Right((await firebaseAuth.toDomain(u.user))!);
     } catch (e) {
-      return Some(AuthFailure());
+      return Left(AuthFailure());
     }
   }
 

@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:injectable/injectable.dart';
-import 'package:massenger/features/authentication/presentation/page/create_account_page.dart';
+import 'package:massenger/features/authentication/presentation/page/landing_page.dart';
 import 'package:massenger/firebase_options.dart';
 import 'package:massenger/injection.dart';
 import 'package:massenger/man.dart';
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),
-      home: const CreateAccountPage(),
+      home: const LandingPage(),
     );
   }
 }

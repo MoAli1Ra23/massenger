@@ -1,3 +1,4 @@
+ 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:massenger/core/error/failure.dart';
@@ -5,6 +6,8 @@ import 'package:massenger/core/error/failure.dart';
 import 'package:massenger/core/value_object/email.dart';
 import 'package:massenger/core/value_object/password.dart';
 import 'package:massenger/features/authentication/domain/repo/auth.dart';
+import 'package:massenger/features/profile/domain/entity/profile.dart';
+import 'package:massenger/features/profile/domain/repo/profile_repo.dart';
 import 'package:massenger/injection.dart';
 
 class CreateAccountProvider extends StateNotifier<CreateAccount> {
@@ -26,25 +29,26 @@ class CreateAccountProvider extends StateNotifier<CreateAccount> {
 
   Future<void> onSingUp() async {
     if (state.isSubmitting) return;
+
     state = state.copyWith(isSubmitting: true);
 
     var x = await getIt
         .get<Auth>()
         .createAcccontWithEmail(state.email, state.password);
-    x.fold(
-        () =>
-            state = state.copyWith(submittingFailure: null, isSubmitted: true),
-        (f) => state = state.copyWith(
-              submittingFailure: f,
-            ));
+    x.fold((f) {
+      return state = state.copyWith(submittingFailure: f);
+    }, (r) async {
+      await getIt.get<ProfileRepo>().createProfile(
+          Profile(userId: r.id, email: state.email.getOrCrash()));
+      return state = state.copyWith(submittingFailure: null, isSubmitted: true);
+    });
   }
+
   Future<void> onSingIn() async {
     if (state.isSubmitting) return;
     state = state.copyWith(isSubmitting: true);
 
-    var x = await getIt
-        .get<Auth>()
-        .loginWithEmail(state.email, state.password);
+    var x = await getIt.get<Auth>().loginWithEmail(state.email, state.password);
     x.fold(
         () =>
             state = state.copyWith(submittingFailure: null, isSubmitted: true),
@@ -52,8 +56,6 @@ class CreateAccountProvider extends StateNotifier<CreateAccount> {
               submittingFailure: f,
             ));
   }
-
-
 }
 
 class CreateAccount extends Equatable {

@@ -4,12 +4,11 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 
 class User extends Equatable {
-  //TODO: Implement UUid;
   final String? name;
   final String? imageURl;  
   final String? phone;  
   final String? email;  
-  final  Object? id;
+  final  String? id;
   const User({
     this.name,
     this.imageURl,
@@ -24,7 +23,7 @@ class User extends Equatable {
     String? imageURl,
     String? phone,
     String? email,
-    Object? id,
+    String? id,
   }) {
     return User(
       name: name ?? this.name,
