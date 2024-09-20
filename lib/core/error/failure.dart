@@ -8,5 +8,6 @@
 
    }
    class AuthFailure extends Failure{}
+   class ConnectionFailure extends Failure{}
     
 

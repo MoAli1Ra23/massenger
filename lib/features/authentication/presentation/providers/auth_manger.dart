@@ -3,6 +3,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:massenger/core/error/failure.dart';
 
 import 'package:massenger/features/authentication/domain/entity/user.dart';
 import 'package:massenger/features/authentication/domain/repo/auth.dart';
@@ -12,9 +13,10 @@ class AuthManger extends StateNotifier<AuthState> {
   AuthManger() : super(const AuthState(user: null));
 
   Future<void> checkAutheState() async {
-    Option<User> currentUserOption = await getIt.get<Auth>().getCurrentUser();
+    Either<Failure, User> currentUserOption =
+        await getIt.get<Auth>().getCurrentUser();
     currentUserOption.fold(
-      () => state = state.copyWith(user: null),
+      (_) => state = state.copyWith(user: null),
       (u) => state = state.copyWith(user: u),
     );
   }

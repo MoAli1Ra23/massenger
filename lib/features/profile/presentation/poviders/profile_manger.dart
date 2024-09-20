@@ -8,6 +8,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:massenger/core/error/failure.dart';
 
 import 'package:massenger/features/authentication/domain/entity/user.dart';
 import 'package:massenger/features/authentication/domain/repo/auth.dart';
@@ -18,8 +19,8 @@ import 'package:massenger/injection.dart';
 class ProfileManger extends StateNotifier<ProfileState> {
   ProfileManger(super.state);
   Future<void> start() async {
-    Option<User> userOption = await getIt.get<Auth>().getCurrentUser();
-    userOption.fold(() {
+    Either<Failure,User> userOption = await getIt.get<Auth>().getCurrentUser();
+    userOption.fold((_) {
       state = state.copyWith(erroMsg: "No user");
     }, (u) async {
       final x = await getIt.get<ProfileRepo>().getprofile(u.id!);

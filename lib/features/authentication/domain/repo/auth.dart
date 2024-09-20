@@ -7,5 +7,5 @@ import 'package:massenger/features/authentication/domain/entity/user.dart';
 abstract class Auth {
   Future<Either<Failure,User>> createAcccontWithEmail(Email email, Password pass);
   Future<Option<Failure>> loginWithEmail(Email email, Password pass);
-  Future<Option<User>> getCurrentUser();
+  Future<Either<Failure,User>> getCurrentUser();
 }

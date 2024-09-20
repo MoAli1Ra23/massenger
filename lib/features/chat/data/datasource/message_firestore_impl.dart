@@ -4,6 +4,7 @@ import 'package:injectable/injectable.dart';
 import 'package:massenger/core/error/failure.dart';
 import 'package:massenger/features/chat/data/datasource/message_data_source.dart';
 import 'package:massenger/features/chat/data/model/message_model.dart';
+import 'package:massenger/features/network/domain/repo/net_repo.dart';
 import 'package:massenger/injection.dart';
 @LazySingleton(as: MessageDataSource,env: [Environment.dev,Environment.prod])
 class MessageFirestoreImpl implements MessageDataSource {
@@ -15,8 +16,10 @@ class MessageFirestoreImpl implements MessageDataSource {
    
   }
   @override
-  Future<Option<Failure>> sendMSG(MessageModel mm) {
-    return store
+  Future<Option<Failure>> sendMSG(MessageModel mm) async {
+   var net= await getIt.get<NetRepo>().check();
+   if(!net.isConnected) return Some(ConnectionFailure());
+    return await store
         .collection("chats")
         .add(mm.toMap())
         .then((v) => none(), onError: (_) => some(BadEmailFormate()));
@@ -25,6 +28,8 @@ class MessageFirestoreImpl implements MessageDataSource {
   @override
   Stream<List<MessageModel>> watchChat(String chatId) async* {
     // 01008414327
+    var net= await getIt.get<NetRepo>().check();
+   if(!net.isConnected) throw ConnectionFailure();
     yield* store
         .collection("chats")
         
