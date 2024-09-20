@@ -30,12 +30,13 @@ environment:
 dependencies:
   cached_network_image: ^3.4.1
   cloud_firestore: null
+  connectivity_plus: ^6.0.5
   cupertino_icons: ^1.0.6
   dartz: ^0.10.1
   equatable: ^2.0.5
   firebase_auth: ^5.2.0
   firebase_core: ^3.4.0
-  firebase_storage: null
+  firebase_storage: ^12.3.1
   flutter:
     sdk: flutter
   flutter_getit: ^2.0.0

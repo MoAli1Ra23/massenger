@@ -10,11 +10,13 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:cloud_firestore/cloud_firestore.dart' as _i974;
 import 'package:firebase_auth/firebase_auth.dart' as _i59;
+import 'package:firebase_storage/firebase_storage.dart' as _i457;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
 import 'core/services/firebase_auth.dart' as _i909;
 import 'core/services/firebase_store.dart' as _i789;
+import 'core/services/my_firebase_storage.dart' as _i636;
 import 'features/authentication/data/repo/auth_impl.dart' as _i856;
 import 'features/authentication/domain/repo/auth.dart' as _i181;
 import 'features/chat/data/datasource/message_data_source.dart' as _i341;
@@ -43,8 +45,10 @@ _i174.GetIt $initGetIt(
   );
   final firebaseAuths = _$FirebaseAuths();
   final firebaseStore = _$FirebaseStore();
+  final myFirebaseStorage = _$MyFirebaseStorage();
   gh.singleton<_i59.FirebaseAuth>(() => firebaseAuths.auth());
   gh.singleton<_i974.FirebaseFirestore>(() => firebaseStore.fire());
+  gh.lazySingleton<_i457.FirebaseStorage>(() => myFirebaseStorage.storage());
   gh.lazySingleton<_i341.MessageDataSource>(
     () => _i1011.MessageFirestoreImpl(),
     registerFor: {
@@ -86,3 +90,5 @@ _i174.GetIt $initGetIt(
 class _$FirebaseAuths extends _i909.FirebaseAuths {}
 
 class _$FirebaseStore extends _i789.FirebaseStore {}
+
+class _$MyFirebaseStorage extends _i636.MyFirebaseStorage {}
