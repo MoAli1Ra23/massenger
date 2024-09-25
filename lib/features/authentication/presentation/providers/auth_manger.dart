@@ -16,26 +16,26 @@ class AuthManger extends StateNotifier<AuthState> {
     Either<Failure, User> currentUserOption =
         await getIt.get<Auth>().getCurrentUser();
     currentUserOption.fold(
-      (_) => state = state.copyWith(user: null),
-      (u) => state = state.copyWith(user: u),
-    );
+        (f) => state = state.copyWith(user: null, failure: f),
+        (u) => state = state.copyWith(user: u,failure: null));
+  }
+  Future<void> sighnOut() async {
+            await getIt.get<Auth>().sighnOut();
+
+state = state.copyWith(user: null, failure: null);
   }
 }
 
 class AuthState extends Equatable {
   final User? user;
-  const AuthState({
-    this.user,
-  });
+
+  final Failure? failure;
+  const AuthState({this.user, this.failure});
 
   @override
-  List<Object?> get props => [user];
+  List<Object?> get props => [user, failure];
 
-  AuthState copyWith({
-    User? user,
-  }) {
-    return AuthState(
-      user: user ?? this.user,
-    );
+  AuthState copyWith({User? user, Failure? failure}) {
+    return AuthState(user: user ?? this.user, failure: failure ?? this.failure);
   }
 }

@@ -1,0 +1,1 @@
+class FirebaseStorageError extends Error {}

@@ -6,4 +6,6 @@ abstract class ProfileDataSource {
   Future<Option<Failure>> add(ProfileModel p);
   Future<Option<Failure>> update(ProfileModel p);
   Future<Either<Failure, ProfileModel?>> get(String userid);
+  Future<Either<Failure, List<ProfileModel>>> getAll();
+
 }

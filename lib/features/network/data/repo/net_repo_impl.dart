@@ -22,6 +22,10 @@ class NetRepoImpl extends NetRepo {
     return NetWorkInfo(
         isWifi: x.contains(ConnectivityResult.wifi),
         isMob: x.contains(ConnectivityResult.ethernet),
-        isConnected: x.contains(ConnectivityResult.ethernet));
+        isConnected: _isConnected(x));
   }
+
+  bool _isConnected(List<ConnectivityResult> l) =>
+      l.contains(ConnectivityResult.mobile) ||
+      l.contains(ConnectivityResult.wifi);
 }

@@ -36,7 +36,7 @@ class CreateAccountProvider extends StateNotifier<CreateAccount> {
         .get<Auth>()
         .createAcccontWithEmail(state.email, state.password);
     x.fold((f) {
-      return state = state.copyWith(submittingFailure: f);
+      return state = state.copyWith(submittingFailure: f,isSubmitting: false,isSubmitted: false);
     }, (r) async {
       await getIt.get<ProfileRepo>().createProfile(
           Profile(userId: r.id, email: state.email.getOrCrash()));

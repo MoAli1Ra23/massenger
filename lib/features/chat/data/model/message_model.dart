@@ -30,7 +30,7 @@ class MessageModel extends Message {
       dateTime: DateTime.fromMillisecondsSinceEpoch(map['dateTime'] as int),
       watchStatr: map['watchStatr'] as int,
       imgeUrl: map['imgeUrl'] != null ? map['imgeUrl'] as String : null,
-      userId: map['userid'] as String,
+      userId:map['userid'] !=null?  map['userid'] as String:"0",
       id: map['id'] != null ? map['id'] as String : null,
     );
   }

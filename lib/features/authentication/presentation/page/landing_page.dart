@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:massenger/features/authentication/presentation/page/create_account_page.dart';
 import 'package:massenger/features/authentication/presentation/providers/auth_manger.dart';
-import 'package:massenger/features/chat/presentation/pages/chats_page.dart';
+import 'package:massenger/features/chat/presentation/pages/chat_page.dart';
 
 var auth = StateNotifierProvider<AuthManger, AuthState>((ref) => AuthManger());
 
@@ -17,8 +17,9 @@ class LandingPage extends StatelessWidget {
         ref.listen(auth, (_, auth) {
           if (auth.user != null) {
             Navigator.push(context, MaterialPageRoute(builder: (_) {
-              return const ChatsPage();
+              return const ChatPage();
             }));
+            // Navigator.pushAndRemoveUntil(context, newRoute, predicate)
            
 
 

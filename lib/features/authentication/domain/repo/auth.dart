@@ -8,4 +8,6 @@ abstract class Auth {
   Future<Either<Failure,User>> createAcccontWithEmail(Email email, Password pass);
   Future<Option<Failure>> loginWithEmail(Email email, Password pass);
   Future<Either<Failure,User>> getCurrentUser();
+  Future<void> sighnOut();
+  Future<void> updateUserDate(String? name,String?imageUrl,String?phone);
 }

@@ -51,15 +51,37 @@ class AuthImpl extends Auth {
   }
 
   @override
-  Future<Either<Failure,domain.User>> getCurrentUser() async {
+  Future<Either<Failure, domain.User>> getCurrentUser() async {
     var firebaseAuth = getIt.get<FirebaseAuth>();
- var net = await getIt.get<NetRepo>().check();
+    var net = await getIt.get<NetRepo>().check();
     if (!net.isConnected) {
       return left(ConnectionFailure());
     } else {
+      User? user = firebaseAuth.currentUser;
+      domain.User? usr = await firebaseAuth.toDomain(user);
+      return usr != null ? Right(usr) : Left(AuthFailure());
+    }
+  }
+
+  @override
+  Future<void> sighnOut() async {
+    var firebaseAuth = getIt.get<FirebaseAuth>();
+
+    await firebaseAuth.signOut();
+  }
+
+  @override
+  Future<void> updateUserDate(
+      String? name, String? imageUrl, String? phone) async {
+    var firebaseAuth = getIt.get<FirebaseAuth>();
     User? user = firebaseAuth.currentUser;
-     domain.User? usr = await firebaseAuth.toDomain(user);
-    return usr!=null? Right(usr):Left(AuthFailure());
-     }
+    if (user == null) return;
+
+    if (name != null && imageUrl != null) {
+      await firebaseAuth.currentUser!.updateProfile(
+        displayName: name,
+        photoURL: imageUrl,
+      );
+    }
   }
 }

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:massenger/core/func/erro_massegs.dart';
 import 'package:massenger/core/utils/my_assets.dart';
 import 'package:massenger/features/authentication/presentation/providers/create_account_provider.dart';
-import 'package:massenger/features/chat/presentation/pages/chats_page.dart';
+import 'package:massenger/features/chat/presentation/pages/messages_page.dart';
 
 final cac = StateNotifierProvider.autoDispose<CreateAccountProvider, CreateAccount>((ref) {
   return CreateAccountProvider();
@@ -16,6 +16,7 @@ class CreateAccountPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: true,
+        
         // extendBody: ,
         appBar: AppBar(),
         body: Padding(
@@ -25,7 +26,7 @@ class CreateAccountPage extends StatelessWidget {
               ref.listen(cac, (_, cac) {
                 if (cac.isSubmitted) {
                   Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => const ChatsPage()));
+                      MaterialPageRoute(builder: (_) => const MessagesPage()));
                 }
                 if (cac.submittingFailure != null) {
                   ScaffoldMessenger.of(context).clearSnackBars();

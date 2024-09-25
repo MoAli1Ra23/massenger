@@ -43,7 +43,10 @@ dependencies:
   flutter_riverpod: ^2.5.1
   image_picker: ^1.1.2
   injectable: ^2.4.4
+  path: ^1.9.0
+  path_provider: ^2.1.4
   rename: ^3.0.2
+  sqflite: ^2.3.3+1
 
 dev_dependencies:
   build_runner: null
@@ -64,6 +67,19 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/chatlogo.png
+    - assets/images/prof.png
+    - assets/images/temp.png
+  fonts:
+    - family: GT Sectra Fine
+      fonts:
+        - asset: assets/fonts/GT Sectra Fine Regular.ttf
+    - family: Cairo
+      fonts:
+        # - asset: fonts/Cairo-Black.ttf
+        # - asset: fonts/Cairo-Bold.ttf
+        - asset: fonts/Cairo-Black.ttf
+        - asset: fonts/Cairo-Bold.ttf
+
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -6,4 +6,5 @@ abstract class ProfileRepo {
   Future<Either<Failure, Profile?>> getprofile(String userid);
   Future<Option<Failure>> updateprofile(Profile profile);
   Future<Option<Failure>> createProfile(Profile profile);
+  Future<Either<Failure,List<Profile>>>  readProfileList( );
 }

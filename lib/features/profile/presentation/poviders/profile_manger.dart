@@ -14,12 +14,14 @@ import 'package:massenger/features/authentication/domain/entity/user.dart';
 import 'package:massenger/features/authentication/domain/repo/auth.dart';
 import 'package:massenger/features/profile/domain/entity/profile.dart';
 import 'package:massenger/features/profile/domain/repo/profile_repo.dart';
+import 'package:massenger/features/uploder/domain/entity/image_file.dart';
+import 'package:massenger/features/uploder/domain/repo/image_file_repo.dart';
 import 'package:massenger/injection.dart';
 
 class ProfileManger extends StateNotifier<ProfileState> {
   ProfileManger(super.state);
   Future<void> start() async {
-    Either<Failure,User> userOption = await getIt.get<Auth>().getCurrentUser();
+    Either<Failure, User> userOption = await getIt.get<Auth>().getCurrentUser();
     userOption.fold((_) {
       state = state.copyWith(erroMsg: "No user");
     }, (u) async {
@@ -28,25 +30,34 @@ class ProfileManger extends StateNotifier<ProfileState> {
       state = state.copyWith(
           user: u,
           profile: p,
-          phone: p?.phone,
+          phone: p?.phone ,
           name: p?.name,
-          imagepathe: p?.imagepathe,
+          imageUrl: p?.imagepathe ,
           email: p?.email);
     });
   }
 
-  void imageUrlChange(String url) {
-    var profile = state.profile!.copyWith(imagepathe: url);
-    var user = state.user!.copyWith(imageURl: url);
-    state = state.copyWith(imagepathe: url, user: user, profile: profile);
+  Future<void> imageUrlChange(String url) async {
+    // var profile = state.profile!.copyWith(imagepathe: url);
+    // var user = state.user!.copyWith(imageURl: url);
+    var x = DateTime.timestamp().toString();
+    ImageFile f = ImageFile(path: url, folder: "profiles/$x");
+    var url2 = await getIt.get<ImageFileRepo>().uplodeImage(f);
+    url2.fold((l) {
+      // TODO:headle error;
+    }, (r) {
+      state = state.copyWith(imageUrl: r.url!, imagepathe: url);
+    });
   }
 
   void nameChange(String name) {
     String? v = _validateName(name);
     if (v == null) {
-      var profile = state.profile!.copyWith(name: name);
-      var user = state.user!.copyWith(name: name);
-      state = state.copyWith(name: name, user: user, profile: profile);
+      // var profile = state.profile!.copyWith(name: name);
+      // var user = state.user!.copyWith(name: name);
+      state = state.copyWith(
+        name: name,
+      );
     } else {
       state = state.copyWith(nameErr: v);
     }
@@ -55,9 +66,11 @@ class ProfileManger extends StateNotifier<ProfileState> {
   void phoneChange(String phone) {
     var v = _validatePhone(phone);
     if (v == null) {
-      var profile = state.profile!.copyWith(phone: phone);
-      var user = state.user!.copyWith(phone: phone);
-      state = state.copyWith(phone: phone, user: user, profile: profile);
+      // var profile = state.profile!.copyWith(phone: phone);
+      // var user = state.user!.copyWith(phone: phone);
+      state = state.copyWith(
+        phone: phone,
+      );
     } else {
       state = state.copyWith(phoneErr: v);
     }
@@ -74,6 +87,35 @@ class ProfileManger extends StateNotifier<ProfileState> {
     if (phone.length < 7) return "short";
     return null;
   }
+
+  Future<void> confirme() async {
+    var u = state.user;
+    var s = state;
+    Profile pp = state.profile!.copyWith(
+        name: s.name != u!.name ? s.name : null,
+        imagepathe: u.imageURl != s.imageUrl ? s.imageUrl : null);
+    Future.wait([
+      getIt.get<ProfileRepo>().updateprofile(pp),
+      getIt.get<Auth>().updateUserDate(
+            u.name != s.name ? s.name : null,
+            u.imageURl != s.imageUrl ? s.imageUrl : null,
+            null,
+          ),
+      start()
+    ]);
+  }
+
+  void cancel() {
+    var u = state.user;
+    var p = state.profile;
+    state = state.copyWith(
+        user: u,
+        profile: p,
+        phone: p?.phone,
+        name: p?.name,
+        imageUrl: p?.imagepathe,
+        email: p?.email);
+  }
 }
 
 class ProfileState extends Equatable {
@@ -86,6 +128,7 @@ class ProfileState extends Equatable {
   final String? email;
   final String? emailErr;
   final String? imagepathe;
+  final String? imageUrl;
   final String? phone;
   final String? phoneErr;
   const ProfileState({
@@ -97,6 +140,7 @@ class ProfileState extends Equatable {
     this.email,
     this.emailErr,
     this.imagepathe,
+    this.imageUrl,
     this.phone,
     this.phoneErr,
   });
@@ -105,6 +149,7 @@ class ProfileState extends Equatable {
     User? user,
     String? erroMsg,
     Profile? profile,
+    String? imageUrl,
     String? name,
     String? nameErr,
     String? email,
@@ -122,6 +167,7 @@ class ProfileState extends Equatable {
       email: email ?? this.email,
       emailErr: emailErr ?? this.emailErr,
       imagepathe: imagepathe ?? this.imagepathe,
+      imageUrl: imageUrl ?? this.imageUrl,
       phone: phone ?? this.phone,
       phoneErr: phoneErr ?? this.phoneErr,
     );
@@ -135,6 +181,7 @@ class ProfileState extends Equatable {
     return [
       user,
       erroMsg,
+      imageUrl,
       profile,
       name,
       nameErr,
