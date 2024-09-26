@@ -50,5 +50,23 @@ Before you start, ensure you have the following installed:
 Once everything is set up, run the app with
    ```bash
     flutter run
+   ```
+### Usage
+### Authentication
 
-  
+- On app launch, users can sign up or log in using their email and password.
+- Authentication status is managed using Firebase Authentication.
+### Chat Functionality
+- Users can send and receive messages in real-time.
+- Messages are stored in Firestore, and UI updates are handled using Riverpod.
+### Contributing
+- Contributions are welcome! Please follow these steps to contribute:
+1. ***Fork the repository.
+2. Create a new branch (`git checkout -b feature-branch`).
+3. Make your changes and commit them (`git commit -m 'Add some feature'`).
+4. Push to the branch (`git push origin feature-branch`).
+4. Create a pull request.
+## License
+This project is licensed under the MIT License. See the [title]LICENSE file for details.
+
+
