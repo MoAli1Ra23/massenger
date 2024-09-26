@@ -26,11 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        textTheme: const TextTheme(
-            displayLarge: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-            displayMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-            displaySmall: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-            bodyLarge: TextStyle()),
+      
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         useMaterial3: true,
       ),

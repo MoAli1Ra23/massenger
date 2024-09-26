@@ -4,10 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:massenger/features/chat/presentation/provider/chat_provider.dart';
 import 'package:massenger/features/profile/presentation/page/profile_page.dart';
+import 'package:massenger/features/profile/presentation/page/profiles_page.dart';
 
 import '../widget/chat_list.dart';
-import 'messages_page.dart';
-
+ 
 var provider = StateNotifierProvider<ChatProvider, ChatsState>((ref) {
   return ChatProvider();
 });
@@ -37,7 +37,7 @@ class ChatPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (_) => const MessagesPage()));
+              .push(MaterialPageRoute(builder: (_) => const ProfilesPage()));
         },
         child: const Icon(Icons.message_rounded),
       ),
